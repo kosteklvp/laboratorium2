@@ -42,24 +42,30 @@ public class MainActivity extends AppCompatActivity {
             StringBuilder batteryInfo = new StringBuilder();
 
             int health = intent.getIntExtra(BatteryManager.EXTRA_HEALTH, 0);
-            batteryInfo.append("Health : " + health).append("\n");
+            batteryInfo.append("Stan : " + health).append("\n");
             int level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
             int scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
 
             if (level != -1 && scale != -1) {
                 int batteryPct = (int) ((level / (float) scale) * 100f);
-                batteryInfo.append("Battery PCT : " + batteryPct).append("\n");
+                batteryInfo.append("Procent naładowania : " + batteryPct).append("\n");
             }
 
             int plugged = intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, 0);
-            batteryInfo.append("Plugged : " + plugged).append("\n");
+            batteryInfo.append("Ladowanie : ");
+            if (plugged == 0) {
+                batteryInfo.append("Brak");
+            } else {
+                batteryInfo.append("Laduje");
+            }
+            batteryInfo.append("\n");
 
             int status = intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
-            batteryInfo.append("charging Status : " + status).append("\n");
+            batteryInfo.append("status : " + status).append("\n");
 
             if (intent.getExtras() != null) {
                 String technology = intent.getExtras().getString(BatteryManager.EXTRA_TECHNOLOGY);
-                batteryInfo.append("Technology: " + technology).append("\n");
+                batteryInfo.append("Technologia : " + technology).append("\n");
             }
 
             int temperature = intent.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, 0);
@@ -68,10 +74,10 @@ public class MainActivity extends AppCompatActivity {
             }
 
             int voltage = intent.getIntExtra(BatteryManager.EXTRA_VOLTAGE, 0);
-            batteryInfo.append("Voltage:" + voltage).append("V\n");
+            batteryInfo.append("Napięcie : " + voltage).append("V\n");
 
             long capacity = getBatteryCapacity();
-            batteryInfo.append("Capacity : " + capacity).append(" mAh\n");
+            batteryInfo.append("Pojemność : " + capacity).append(" mAh\n");
             result.setText(batteryInfo.toString());
         } else {
             Toast.makeText(MainActivity.this, "nie ma baterii", Toast.LENGTH_SHORT).show();
