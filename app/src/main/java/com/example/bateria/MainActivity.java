@@ -16,6 +16,7 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
 
     private TextView result;
+    IntentFilter intentFilter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,11 +28,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadBatteryInfo() {
-        IntentFilter intentFilter = new IntentFilter();
+        intentFilter = new IntentFilter();
         intentFilter.addAction(Intent.ACTION_POWER_CONNECTED);
         intentFilter.addAction(Intent.ACTION_POWER_DISCONNECTED);
         intentFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
 
+        registerReceiver(batteryInfoReceiver, intentFilter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(batteryInfoReceiver);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         registerReceiver(batteryInfoReceiver, intentFilter);
     }
 
